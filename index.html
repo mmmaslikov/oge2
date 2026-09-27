@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ Информатика — Задание 2. Кодирование и декодирование информации</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f5f5f7;
+  --bg-card: #ffffff;
+  --text: #1d1d1f;
+  --text-soft: #515154;
+  --text-muted: #86868b;
+  --border: #d2d2d7;
+  --border-soft: #e8e8ed;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --accent-soft: #e8f4fd;
+  --success: #34c759;
+  --success-soft: #eafaf1;
+  --error: #ff3b30;
+  --error-soft: #fff0ef;
+  --warning: #ff9500;
+  --warning-soft: #fff8eb;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { padding: 16px; }
+
+.container { max-width: 1000px; margin: 0 auto; }
+
+.header {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-soft);
+}
+
+.header-title {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.header-sub { color: var(--text-soft); font-size: 15px; }
+
+.header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.header-meta span { display: flex; align-items: center; gap: 6px; }
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-card);
+  padding: 8px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-soft);
+  overflow-x: auto;
+}
+
+.tab {
+  flex: 1;
+  min-width: 140px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.tab:hover { background: var(--bg-soft); color: var(--text); }
+.tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tab.active { background: var(--accent); color: white; box-shadow: var(--shadow-sm); }
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 26px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-soft);
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+h3 { font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+p { margin-bottom: 12px; color: var(--text-soft); }
+p:last-child { margin-bottom: 0; }
+ul, ol { margin: 10px 0 14px 24px; color: var(--text-soft); }
+li { margin-bottom: 6px; }
+strong { color: var(--text); font-weight: 600; }
+
+.note {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: var(--text);
+}
+.note-warn { background: var(--warning-soft); border-left-color: var(--warning); }
+.note-success { background: var(--success-soft); border-left-color: var(--success); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 44px;
+  min-width: 44px;
+}
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary { background: var(--bg-soft); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--border-soft); }
+.btn-block { width: 100%; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+.task {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.task-num {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.task-link {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.task-link:hover { color: var(--accent); background: var(--accent-soft); }
+
+.task-text {
+  color: var(--text);
+  font-size: 15px;
+  margin-bottom: 14px;
+  line-height: 1.65;
+}
+
+.code-table {
+  width: auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  margin: 14px 0;
+}
+
+.code-table th, .code-table td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: center;
+  min-width: 40px;
+  font-weight: 500;
+}
+
+.code-table th {
+  background: var(--bg-soft);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.code-table td {
+  background: #ffffff;
+  color: var(--text);
+}
+
+.morse-text {
+  font-family: "Consolas", "Monaco", monospace;
+  font-size: 16px;
+  letter-spacing: 2px;
+  background: var(--bg-soft);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+  margin: 10px 0;
+  border: 1px solid var(--border-soft);
+}
+
+.input-group { margin-top: 14px; }
+
+.input-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--bg-card);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  min-height: 44px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.input.correct { border-color: var(--success); background: var(--success-soft); }
+.input.wrong { border-color: var(--error); background: var(--error-soft); }
+
+.feedback {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.success { background: var(--success-soft); color: #1b7a3d; border: 1px solid #b7ebc9; }
+.feedback.error { background: var(--error-soft); color: #c41e14; border: 1px solid #f5c6c2; }
+
+.solution {
+  margin-top: 12px;
+  padding: 16px 18px;
+  background: var(--bg-soft);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent);
+  font-size: 14px;
+  line-height: 1.7;
+  display: none;
+}
+.solution.show { display: block; }
+.solution-title { font-weight: 600; margin-bottom: 8px; color: var(--text); }
+
+.results-panel {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-top: 20px;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow);
+  display: none;
+}
+.results-panel.show { display: block; }
+
+.results-score {
+  text-align: center;
+  padding: 22px;
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+.results-score-num { font-size: 52px; font-weight: 700; color: var(--accent); line-height: 1; }
+.results-score-label { font-size: 14px; color: var(--text-soft); margin-top: 6px; }
+
+.progress-bar {
+  height: 6px;
+  background: var(--border-soft);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+
+.result-item {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+}
+.result-item.correct { background: var(--success-soft); border-color: #b7ebc9; }
+.result-item.wrong { background: var(--error-soft); border-color: #f5c6c2; }
+
+.result-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.result-item-num { font-weight: 600; color: var(--text); }
+.result-item-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+.result-item-status.correct { background: var(--success); color: white; }
+.result-item-status.wrong { background: var(--error); color: white; }
+
+.result-item-answers { font-size: 13px; color: var(--text-soft); }
+.result-item-answers strong { color: var(--text); }
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+.section-desc { font-size: 14px; color: var(--text-muted); }
+
+.type-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: 0.02em;
+}
+.type-badge.numbers { background: #1e3a8a; color: #ffffff; }
+.type-badge.symbols { background: #fef3c7; color: #92400e; }
+.type-badge.morse { background: #dcfce7; color: #166534; }
+
+.solution p { margin-bottom: 8px; }
+.solution p:last-child { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .header-title { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1 class="header-title">Задание 2. Кодирование и декодирование информации</h1>
+    <p class="header-sub">Подготовка к ОГЭ по информатике · 9 класс</p>
+    <div class="header-meta">
+      <span>👨‍🏫 Учитель: Масликов М.М.</span>
+      <span>⏱ Время: 2 урока (80 мин)</span>
+      <span>📚 20 заданий</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="theory" role="tab" aria-selected="true">📖 Теория</button>
+    <button class="tab" data-tab="practice1" role="tab" aria-selected="false">⚡ Практика 1</button>
+    <button class="tab" data-tab="practice2" role="tab" aria-selected="false">📝 Практика 2</button>
+  </nav>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <p>Практические задания оформлены по материалам <a href="https://inf-oge.sdamgia.ru" target="_blank" rel="noopener">Решу ОГЭ (Сдам ГИА)</a></p>
+    <p style="margin-top:6px;">© 2026 · Учебный материал для подготовки к ОГЭ</p>
+  </footer>
+</div>
+
+<script>
+const TASKS = [
+  {
+    id: 1, num: 37509, type: 'numbers',
+    text: 'Ваня шифрует русские слова, записывая вместо каждой буквы ее номер в алфавите (без пробелов). Номера букв даны в таблице.',
+    table: [
+      ['А 1', 'Й 11', 'У 21', 'Э 31'],
+      ['Б 2', 'К 12', 'Ф 22', 'Ю 32'],
+      ['В 3', 'Л 13', 'Х 23', 'Я 33'],
+      ['Г 4', 'М 14', 'Ц 24', ''],
+      ['Д 5', 'Н 15', 'Ч 25', ''],
+      ['Е 6', 'О 16', 'Ш 26', ''],
+      ['e 7', 'П 17', 'Щ 27', ''],
+      ['Ж 8', 'Р 18', 'Ъ 28', ''],
+      ['З 9', 'С 19', 'Ы 29', ''],
+      ['И 10', 'Т 20', 'Ь 30', '']
+    ],
+    text2: 'Некоторые шифровки можно расшифровать несколькими способами. Например, 311333 может означать «ВАЛЯ», может — «ЭЛЯ», а может — «ВААВВВ».',
+    text3: 'Даны четыре шифровки:\n232323\n654313\n203105\n203033\nТолько одна из них расшифровывается единственным способом. Найдите ее и расшифруйте. Получившееся слово запишите в качестве ответа.',
+    answer: 'ТВИД',
+    solution: 'Проанализируем каждый вариант ответа.\n\n1. «232323» может означать как «ХХХ» так и «БВБВБВ», и др.\n\n2. «654313» может означать как «ЕДГВАВ» так и «ЕДГВЛ».\n\n3. «203105» может означать только «ТВИД».\n\n4. «203033» может означать как «ТЬВВ» так и «ТЬЯ».\n\nСледовательно, ответ «ТВИД».\n\nОтвет: ТВИД.'
+  },
+  {
+    id: 2, num: 187, type: 'symbols',
+    text: 'Вася и Петя играли в шпионов и кодировали сообщения собственным шифром. Фрагмент кодовой таблицы приведен ниже:',
+    table: [
+      ['Ж','Е','С','А','К','Л'],
+      ['+#','+^#','#','^','^#','#+']
+    ],
+    text2: 'Расшифруйте сообщение, если известно, что буквы в нем не повторяются:\n#++^##^#^\nЗапишите в ответе расшифрованное сообщение.',
+    answer: 'ЛЕСКА',
+    solution: 'Сопоставляя символы их кодам, расшифруем сообщение:\n\n#++^##^#^ = ЛЕСКА.\n\nОтвет: ЛЕСКА.'
+  },
+  {
+    id: 3, num: 6189, type: 'morse',
+    text: 'От разведчика была получена следующая шифрованная радиограмма, переданная с использованием азбуки Морзе:\n−•−•−••−−•−−',
+    text2: 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме использовались только следующие буквы:',
+    table: [
+      ['Т','А','У','Ж','Х'],
+      ['−','•−','••−','•••−','••••']
+    ],
+    text3: 'Определите текст радиограммы. В ответе укажите, сколько букв было в исходной радиограмме.',
+    answer: '7',
+    solution: 'Радиограмма расшифровывается однозначно: ТААУТАТ.\n\nВсего букв в радиограмме 7.\n\nОтвет: 7.'
+  },
+  {
+    id: 4, num: 628, type: 'numbers',
+    text: 'На киностудии снимали фильм про шпионов и закодировали сообщение придуманным шифром. В сообщении присутствуют только буквы приведенного фрагмента кодовой таблицы:',
+    table: [
+      ['Б','И','С','Е','Р'],
+      ['110','01','100','10','11']
+    ],
+    text2: 'Определите, какое сообщение закодировано в строчке:\n11010001100.\nВ ответе запишите последовательность букв без запятых и других знаков препинания.',
+    answer: 'БСИС',
+    solution: 'Сопоставляя символы их кодам, расшифруем сообщение:\n\n11010001100 = БСИС.\n\nОтвет: БСИС.'
+  },
+  {
+    id: 5, num: 127, type: 'numbers',
+    text: 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы ее код:',
+    table: [
+      ['А','Д','К','Н','О','С'],
+      ['01','100','101','10','111','000']
+    ],
+    text2: 'Некоторые цепочки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК.',
+    text3: 'Даны три кодовые цепочки:\n1010110\n11110001\n100000101\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.',
+    answer: 'ОДА',
+    solution: 'Проанализируем каждый вариант ответа:\n\n1. «1010110» может означать как «НКН» так и «КАН».\n\n2. «11110001» может означать только «ОДА».\n\n3. «100000101» может означать как «ДСК» так и «НСАА».\n\nСледовательно, ответ «ОДА».\n\nОтвет: ОДА.'
+  },
+  {
+    id: 6, num: 4644, type: 'morse',
+    text: 'От разведчика была получена следующая шифрованная радиограмма, переданная с использованием азбуки Морзе:\n•−••−•−−•−−−••−−•',
+    text2: 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме использовались только следующие буквы:',
+    table: [
+      ['И','А','Н','Г','Ч'],
+      ['••','•−','−•','−−•','−−−•']
+    ],
+    text3: 'Определите текст радиограммы.',
+    answer: 'АИНГЧАН',
+    solution: 'Комбинация «•−» соответствует букве А, «••» — букве И, «−•» — букве Н, «−−•» — букве Г, «−−−•» — букве Ч, «•−» — букве А, «−•» — букве Н.\n\nИтак, шифром закодировано сообщение АИНГЧАН.\n\nОтвет: АИНГЧАН.'
+  },
+  {
+    id: 7, num: 247, type: 'morse',
+    text: 'От разведчика была получена следующая шифрованная радиограмма, переданная с использованием азбуки Морзе:\n–•–•–•––••–••–•–••',
+    text2: 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме могли использоваться только следующие буквы:',
+    table: [
+      ['Н','К','И','Л','М'],
+      ['–•','–•–','••','•–••','––']
+    ],
+    text3: 'Расшифруйте радиограмму. Запишите в ответе расшифрованную радиограмму.',
+    answer: 'ННКНЛКИ',
+    solution: 'Первой буквой могут быть буквы Н и К, однако, при выборе буквы К дальнейшая расшифровка невозможна. Аналогично для выбора второй буквы.\n\nКомбинация «–•–» соответствует букве К, «–•» — букве Н, «•–••» — букве Л, «••» — букве И.\n\nИтак, шифром закодировано сообщение ННКНЛКИ.\n\nОтвет: ННКНЛКИ.'
+  },
+  {
+    id: 8, num: 5307, type: 'numbers',
+    text: 'Валя шифрует русские слова, записывая вместо каждой буквы ее код.',
+    table: [
+      ['А','В','Д','О','Р','У'],
+      ['01','011','100','111','010','001']
+    ],
+    text2: 'Некоторые цепочки можно расшифровать не одним способом. Например, 00101001 может означать не только УРА, но и УАУ.',
+    text3: 'Даны три кодовые цепочки:\n01001001\n0100100101\n111011111100\nНайдите среди них ту, которая имеет только одну расшифровку и запишите в ответе расшифрованное слово.',
+    answer: 'ОВОД',
+    solution: 'Проанализируем каждый вариант ответа:\n\n1. «01001001» может означать как «АУУ», так и «РАУ».\n\n2. «0100100101» может означать как «АУУА», так и «РРАА».\n\n3. «111011111100» может означать только «ОВОД».\n\nОтвет: ОВОД.'
+  },
+  {
+    id: 9, num: 348, type: 'numbers',
+    text: 'Вася шифрует русские слова, записывая вместо каждой буквы ее номер в алфавите (без пробелов). Номера букв даны в таблице:',
+    table: [
+      ['А 1', 'Й 11', 'У 21', 'Э 31'],
+      ['Б 2', 'К 12', 'Ф 22', 'Ю 32'],
+      ['В 3', 'Л 13', 'Х 23', 'Я 33'],
+      ['Г 4', 'М 14', 'Ц 24', ''],
+      ['Д 5', 'Н 15', 'Ч 25', ''],
+      ['Е 6', 'О 16', 'Ш 26', ''],
+      ['e 7', 'П 17', 'Щ 27', ''],
+      ['Ж 8', 'Р 18', 'Ъ 28', ''],
+      ['З 9', 'С 19', 'Ы 29', ''],
+      ['И 10', 'Т 20', 'Ь 30', '']
+    ],
+    text2: 'Некоторые шифровки можно расшифровать несколькими способами. Например, 12112 может означать «АБАК», может — «КАК», а может — «АБААБ».',
+    text3: 'Даны четыре шифровки:\n20335\n21120\n31321\n51201\nТолько одна из них расшифровывается единственным способом. Найдите ее и расшифруйте. То, что получилось, запишите в качестве ответа.',
+    answer: 'ДАТА',
+    solution: 'Проанализируем каждый вариант ответа:\n\n1. «20335» может означать как «ТВВД» так и «ТЯД».\n\n2. «21120» может означать как «УАТ» так и «БААТ».\n\n3. «31321» может означать как «ЭЮА» так и «ВАВБА».\n\n4. «51201» может означать только «ДАТА».\n\nСледовательно, ответ «ДАТА».\n\nОтвет: ДАТА.'
+  },
+  {
+    id: 10, num: 287, type: 'symbols',
+    text: 'Мальчики играли в шпионов и закодировали сообщение придуманным шифром. Кодовая таблица приведена ниже:',
+    table: [
+      ['К','Л','М','Н','О','П','Р'],
+      ['+_+','_*','*+','_++','*','__+','__']
+    ],
+    text2: 'Расшифруйте полученное сообщение:\n*+_++_++___*\nЗапишите в ответе расшифрованное сообщение.',
+    answer: 'МННРЛ',
+    solution: 'Первый символ кода — «*» — может кодировать букву О, тогда следующие две группы символов «+_+» соответствуют буквам К. Но в кодовой таблице нет буквы, код которой начинается с «+__», дальнейшая расшифровка невозможна.\n\nСледовательно, второй букве соответствуют не один символ «*», а два: «*+», кодирующие букву М.\n\nКомбинация «_++» соответствует букве Н, «__» — букве Р, «_*» — букве Л.\n\nИтак, шифром закодировано сообщение МННРЛ.\n\nОтвет: МННРЛ.'
+  }
+  {
+    id: 11, num: 1121, type: 'morse',
+    text: 'От разведчика была получена следующая шифрованная радиограмма, переданная с использованием азбуки Морзе:\n• •- • • •- •-- •- • • • •-',
+    text2: 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме использовались только следующие буквы:',
+    table: [
+      ['Т','А','У','Ж','Х'],
+      ['-','•-','• •-','• • •-','• • • •']
+    ],
+    text3: 'Определите текст радиограммы.',
+    answer: 'УЖАТАХТ',
+    solution: 'Радиограмма расшифровывается однозначно: УЖАТАХТ.\n\nОтвет: УЖАТАХТ.'
+  },
+  {
+    id: 12, num: 4958, type: 'numbers',
+    text: 'Валя шифрует русские слова (последовательности букв), записывая вместо каждой буквы ее код.',
+    table: [
+      ['А','Д','К','Н','О','С'],
+      ['01','100','101','10','111','000']
+    ],
+    text2: 'Некоторые шифровки можно расшифровать не одним способом. Например, 00010101 может означать не только СКА, но и СНК.',
+    text3: 'Даны три кодовые цепочки:\n1010110\n11110001\n100000101\nНайдите среди них ту, которая имеет только одну расшифровку, и запишите в ответе расшифрованное слово.',
+    answer: 'ОДА',
+    solution: 'Проанализируем каждый вариант ответа:\n\n1. «1010110» может означать как «НКН» так и «КАН».\n\n2. «11110001» может означать только «ОДА».\n\n3. «100000101» может означать как «ДСК», так и «НСАА».\n\nСледовательно, ответ «ОДА».\n\nОтвет: ОДА.'
+  },
+  {
+    id: 13, num: 4689, type: 'morse',
+    text: 'От разведчика была получена следующая шифрованная радиограмма, переданная с использованием азбуки Морзе:\n•− •− − •− −••−••−−•',
+    text2: 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме использовались только следующие буквы:',
+    table: [
+      ['А','Г','И','П','М'],
+      ['•−','−−•','••','•−−•','−−']
+    ],
+    text3: 'Определите текст радиограммы. В ответе укажите, сколько букв было в исходной радиограмме.',
+    answer: '6',
+    solution: 'Сопоставляя символы их кодам, расшифруем сообщение:\n\n•− •− − •− −••−••−−• = АПГАИГ.\n\nВсего букв в сообщении 6.\n\nОтвет: 6.'
+  },
+  {
+    id: 14, num: 448, type: 'numbers',
+    text: 'Вася шифрует английские слова, записывая вместо каждой буквы ее номер в алфавите (без пробелов). Номера букв даны в таблице:',
+    table: [
+      ['A 1', 'K 11', 'U 21'],
+      ['B 2', 'L 12', 'V 22'],
+      ['C 3', 'M 13', 'W 23'],
+      ['D 4', 'N 14', 'X 24'],
+      ['E 5', 'O 15', 'Y 25'],
+      ['F 6', 'P 16', 'Z 26'],
+      ['G 7', 'Q 17', ''],
+      ['H 8', 'R 18', ''],
+      ['I 9', 'S 19', ''],
+      ['J 10', 'T 20', '']
+    ]
+    text2: 'Некоторые шифровки можно расшифровать не одним способом. Например, 16118 может означать «AFAR», может — «PAR», а может — «AFAAH».',
+    text3: 'Даны четыре шифровки:\n2016\n2345\n4523\n6120\nТолько одна из них расшифровывается единственным способом. Найдите ее и расшифруйте. То, что получилось, запишите в качестве ответа.',
+    answer: 'FAT',
+    solution: 'Проанализируем каждый вариант ответа:\n\n1. «2016» может означать как «TP» так и «TAF».\n\n2. «2345» может означать как «WDE» так и «BCDE».\n\n3. «4523» может означать как «DEBC» так и «DEW».\n\n4. «6120» может означать только «FAT».\n\nСледовательно, ответ «FAT».\n\nОтвет: FAT.'
+  },
+  {
+    id: 15, num: 906, type: 'symbols',
+    text: 'Ребята играли в разведчиков и закодировали сообщение придуманным шифром. В сообщении присутствуют только буквы из приведенного фрагмента кодовой таблицы.',
+    table: [
+      ['С','М','А','О','Р','К'],
+      ['ΛΩΩ','ΩΛ','ΩΩ','ΩΩΛ','ΛΩΛ','ΩΛΩ']
+    ],
+    text2: 'Определите, какое сообщение закодировано в строчке:\nΛΩΛΩΩΛΩΛΩ\nВ ответе запишите последовательность букв без запятых и других знаков препинания.',
+    answer: 'РОК',
+    solution: 'Первый символ расшифровывается однозначно, ΛΩΛ — это буква Р.\n\nС символов ΩΩ начинаются буквы А и О, но А не подходит, так как тогда невозможно будет расшифровать оставшуюся последовательность символов ΛΩΛΩ.\n\nТаким образом, расшифровка возможна единственным образом РОК.\n\nОтвет: РОК.'
+  },
+  {
+    id: 16, num: 12851, type: 'numbers',
+    text: 'От разведчика было получено следующее сообщение.\n101110011111110101',
+    text2: 'В этом сообщении зашифрован пароль — последовательность русских букв. В пароле использовались только буквы А, В, К, О, Р, Т; каждая буква кодировалась последовательностью двоичных символов по следующей таблице.',
+    table: [
+      ['А','В','К','О','Р','Т'],
+      ['01','10','000','111','0011','1101']
+    ],
+    text3: 'Расшифруйте сообщение. Запишите в ответ пароль.',
+    answer: 'ВОРОТА',
+    solution: 'Сопоставляя символы их кодам, расшифруем сообщение:\n\n101110011111110101 = ВОРОТА.\n\nОтвет: ВОРОТА.'
+  },
+  {
+    id: 17, num: 708, type: 'morse',
+    text: 'Разведчик передал в штаб радиограмму:\n•––•••–••––••–•––',
+    text2: 'В этой радиограмме содержится последовательность букв, в которой встречаются только буквы А, Д, Ж, Л, Т. Каждая буква закодирована с помощью азбуки Морзе. Разделителей между кодами букв нет.',
+    table: [
+      ['А','Д','Ж','Л','Т'],
+      ['•–','–••','•–••','–','•••–']
+    ],
+    text3: 'Запишите в ответе переданную последовательность букв.',
+    answer: 'АДЖЛДЛАЛ',
+    solution: 'С точки начинается буква А и буква Ж. Буква Ж не подходит, следовательно, первая буква — А.\n\nС тире начинается только буква Д. Далее стоит буква Ж, поскольку если предположить, что следующая буква — А, расшифровка становится невозможной.\n\nДалее идут буквы Л, Д, Л, А и Л.\n\nТаким образом, зашифрованное слово: АДЖЛДЛАЛ.\n\nОтвет: АДЖЛДЛАЛ.'
+  },
+  {
+    id: 18, num: 43440, type: 'numbers',
+    text: 'Ваня шифрует русские слова, записывая вместо каждой буквы ее номер в алфавите (без пробелов). Номера букв даны в таблице.',
+    table: [
+      ['А 1', 'Й 11', 'У 21', 'Э 31'],
+      ['Б 2', 'К 12', 'Ф 22', 'Ю 32'],
+      ['В 3', 'Л 13', 'Х 23', 'Я 33'],
+      ['Г 4', 'М 14', 'Ц 24', ''],
+      ['Д 5', 'Н 15', 'Ч 25', ''],
+      ['Е 6', 'О 16', 'Ш 26', ''],
+      ['e 7', 'П 17', 'Щ 27', ''],
+      ['Ж 8', 'Р 18', 'Ъ 28', ''],
+      ['З 9', 'С 19', 'Ы 29', ''],
+      ['И 10', 'Т 20', 'Ь 30', '']
+    ],
+    text2: 'Некоторые шифровки можно расшифровать несколькими способами. Например, 311333 может означать «ВАЛЯ», может — «ЭЛЯ», а может — «ВААВВВ».',
+    text3: 'Даны четыре шифровки:\n21313\n36510\n13876\n10727\nТолько одна из них расшифровывается единственным способом. Найдите ее и расшифруйте. Получившееся слово запишите в качестве ответа.',
+    answer: 'ВЕДИ',
+    solution: 'Проанализируем каждый вариант ответа.\n\n1. Ответ «21313» может означать как «УЭВ» так и «БЛЛ», и др.\n\n2. Ответ «36510» может означать только «ВЕДИ».\n\n3. Ответ «13876» может означать как «ЛЖеЕ» так и «АВЖеЕ», и др.\n\n4. Ответ «10727» может означать как «ИеЩ» так и «ИеБе», и др.\n\nСледовательно, ответ «ВЕДИ».\n\nОтвет: ВЕДИ.'
+  },
+  {
+    id: 19, num: 167, type: 'symbols',
+    text: 'Вася и Петя играли в шпионов и кодировали сообщения собственным шифром. Фрагмент кодовой таблицы приведен ниже:',
+    table: [
+      ['Н','М','Л','И','Т','О'],
+      ['~','*','*@','@~*','@*','~*']
+    ],
+    text2: 'Расшифруйте сообщение, если известно, что буквы в нем не повторяются:\n*@@~**~*~\nЗапишите в ответе расшифрованное сообщение.',
+    answer: 'ЛИМОН',
+    solution: 'Сопоставляя символы их кодам, расшифруем сообщение:\n\n*@@~**~*~ = ЛИМОН.\n\nОтвет: ЛИМОН.'
+  }
+  {
+    id: 20, num: 327, type: 'numbers',
+    text: 'Ваня шифрует русские слова, записывая вместо каждой буквы ее номер в алфавите (без пробелов). Номера букв даны в таблице:',
+    table: [
+      ['А 1', 'Й 11', 'У 21', 'Э 31'],
+      ['Б 2', 'К 12', 'Ф 22', 'Ю 32'],
+      ['В 3', 'Л 13', 'Х 23', 'Я 33'],
+      ['Г 4', 'М 14', 'Ц 24', ''],
+      ['Д 5', 'Н 15', 'Ч 25', ''],
+      ['Е 6', 'О 16', 'Ш 26', ''],
+      ['e 7', 'П 17', 'Щ 27', ''],
+      ['Ж 8', 'Р 18', 'Ъ 28', ''],
+      ['З 9', 'С 19', 'Ы 29', ''],
+      ['И 10', 'Т 20', 'Ь 30', '']
+    ],
+    text2: 'Некоторые шифровки можно расшифровать несколькими способами. Например, 311333 может означать «ВАЛЯ», может — «ЭЛЯ», а может — «ВААВВВ».',
+    text3: 'Даны четыре шифровки:\n3135420\n2102030\n1331320\n2033510\nТолько одна из них расшифровывается единственным способом. Найдите ее и расшифруйте. Получившееся слово запишите в качестве ответа.',
+    answer: 'БИТЬ',
+    solution: 'Проанализируем каждый вариант ответа:\n\n1. «3135420» может означать как «ВЛДГТ» так и «ВАВДГТ».\n\n2. «2102030» может означать только «БИТЬ».\n\n3. «1331320» может означать как «ЛЭВТ» так и «АВЭВТ».\n\n4. «2033510» может означать как «ТЯДИ» так и «ТВВДИ».\n\nСледовательно, ответ «БИТЬ».\n\nОтвет: БИТЬ.'
+  },
+  {
+    id: 21, num: 845, type: 'symbols',
+    text: 'Ваня и Коля переписываются при помощи придуманного шифра. Фрагмент кодовой таблицы приведен ниже.',
+    table: [
+      ['П','Р','И','В','Е','Т'],
+      ['@@@&','@&&','&@','&&@','&&&@','@&@']
+    ],
+    text2: 'Расшифруйте сообщение, если известно, что в нем содержатся только буквы из предложенной таблицы. Разделителей между кодами букв нет:\n&&@&&&@@&@&&&@@&&\nЗапишите в ответе расшифрованное сообщение.',
+    answer: 'ВЕТЕР',
+    solution: 'Данный код расшифровывается однозначно, расшифровкой является слово ВЕТЕР.\n\nОтвет: ВЕТЕР.'
+  },
+  {
+    id: 22, num: 18211, type: 'morse',
+    text: 'От разведчика была получена следующая информация - радиограмма, переданная с использованием азбуки Морзе:\n1 1 1 1 0 0 1 0 0 1 1 0 0 0',
+    text2: 'При передаче радиограммы было потеряно разбиение на буквы, но известно, что в радиограмме использовались только следующие буквы:',
+    table: [
+      ['Е','Н','О','З','Щ'],
+      ['0','10','111','1100','1101']
+    ],
+    text3: 'Определите текст радиограммы. В ответе укажите, сколько букв было в исходной радиограмме.',
+    answer: '7',
+    solution: 'Сопоставляя символы их кодам, расшифруем сообщение:\n\n111100100110000 = ОНЕНЕЗЕ.\n\nКоличество букв в исходной радиограмме: 7.\n\nОтвет: 7.'
+  }
+];
+
+const state = {
+  currentTab: 'theory',
+  answers1: {}, checked1: {}, showSolution1: {},
+  answers2: {}, results2: null
+};
+
+function getTypeBadge(type) {
+  const map = {
+    numbers: '<span class="type-badge numbers">Номера</span>',
+    symbols: '<span class="type-badge symbols">Символы</span>',
+    morse: '<span class="type-badge morse">Морзе</span>'
+  };
+  return map[type] || '';
+}
+
+function renderTheory() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const intro = document.createElement('section');
+  intro.className = 'card';
+  intro.innerHTML = `
+    <h2 class="card-title">Что такое кодирование и декодирование?</h2>
+    <p><strong>Кодирование</strong> — это процесс преобразования информации из одной формы в другую. <strong>Декодирование</strong> — обратный процесс, восстановление исходной информации.</p>
+    <p>В задании 2 ОГЭ по информатике вам встретятся три типа заданий:</p>
+    <ul>
+      <li><strong>Шифры с номерами букв</strong> — каждой букве соответствует её номер в алфавите</li>
+      <li><strong>Шифры с символьными кодами</strong> — каждой букве соответствует набор символов</li>
+      <li><strong>Азбука Морзе</strong> — радиограммы, где буквы кодируются точками и тире</li>
+    </ul>
+    <div class="note">
+      <strong>Важно:</strong> некоторые шифровки можно расшифровать несколькими способами. Ваша задача — найти ту, которая расшифровывается <em>единственным</em> способом.
+    </div>
+  `;
+  app.appendChild(intro);
+
+  const types = document.createElement('section');
+  types.className = 'card';
+  types.innerHTML = `
+    <h2 class="card-title">Типы заданий</h2>
+    
+    <h3> Тип А: Шифры с номерами букв <span class="type-badge numbers">Номера</span></h3>
+    <p>Каждой букве русского или английского алфавита соответствует её номер. Например, А=1, Б=2, В=3 и т.д.</p>
+    <p><strong>Задача:</strong> найти шифровку, которая расшифровывается единственным способом.</p>
+
+    <h3>📊 Тип Б: Шифры с символьными кодами <span class="type-badge symbols">Символы</span></h3>
+    <p>Каждой букве соответствует набор специальных символов (например, +# или ΛΩΩ).</p>
+    <p><strong>Задача:</strong> расшифровать сообщение, используя кодовую таблицу.</p>
+
+    <h3>📊 Тип В: Азбука Морзе <span class="type-badge morse">Морзе</span></h3>
+    <p>Буквы кодируются комбинациями точек (•) и тире (−). При передаче радиограммы теряется разбиение на буквы.</p>
+    <p><strong>Задача:</strong> восстановить текст радиограммы или определить количество букв.</p>
+
+    <div class="note note-warn">
+      <strong>Совет:</strong> начинайте расшифровку с начала строки и пробуйте разные варианты разбиения. Если зашли в тупик — возвращайтесь и пробуйте другой вариант.
+    </div>
+  `;
+  app.appendChild(types);
+
+  const algo = document.createElement('section');
+  algo.className = 'card';
+  algo.innerHTML = `
+    <h2 class="card-title">Алгоритм решения</h2>
+    
+    <h3>Для шифров с номерами букв (Тип А)</h3>
+    <ol>
+      <li>Возьмите первую шифровку и попробуйте разбить её на номера букв</li>
+      <li>Проверьте, можно ли разбить её другим способом</li>
+      <li>Если есть несколько вариантов — эта шифровка не подходит</li>
+      <li>Повторите для всех шифровок, пока не найдёте единственную</li>
+    </ol>
+
+    <h3>Для шифров с символьными кодами (Тип Б)</h3>
+    <ol>
+      <li>Начните расшифровку с первого символа</li>
+      <li>Найдите в таблице код, который начинается с этого символа</li>
+      <li>Если есть несколько вариантов — попробуйте каждый</li>
+      <li>Продолжайте, пока не расшифруете всё сообщение</li>
+    </ol>
+
+    <h3>Для азбуки Морзе (Тип В)</h3>
+    <ol>
+      <li>Начните с первого символа (точка или тире)</li>
+      <li>Найдите в таблице букву, код которой начинается с этого символа</li>
+      <li>Если есть несколько вариантов — попробуйте каждый и проверьте, получается ли расшифровать остальное</li>
+      <li>Запишите расшифрованное слово</li>
+    </ol>
+
+    <div class="note">
+      <strong>Лайфхак:</strong> для азбуки Морзе начинайте с самых длинных кодов — они обычно однозначны.
+    </div>
+  `;
+  app.appendChild(algo);
+
+  const example1 = document.createElement('section');
+  example1.className = 'card';
+  example1.innerHTML = `
+    <h2 class="card-title">Разбор примера 1 (шифр с номерами букв)</h2>
+    <p><strong>Задание №37509.</strong> Ваня шифрует русские слова, записывая вместо каждой буквы ее номер в алфавите (без пробелов). Номера букв даны в таблице.</p>
+    <p>Некоторые шифровки можно расшифровать несколькими способами. Например, 311333 может означать «ВАЛЯ», может — «ЭЛЯ», а может — «ВААВВВ».</p>
+    <p>Даны четыре шифровки:</p>
+    <ul>
+      <li>232323</li>
+      <li>654313</li>
+      <li>203105</li>
+      <li>203033</li>
+    </ul>
+    <p>Только одна из них расшифровывается единственным способом. Найдите ее и расшифруйте.</p>
+
+    <h3>Решение</h3>
+    <p>Проанализируем каждый вариант ответа.</p>
+    <p><strong>1.</strong> «232323» может означать как «ХХХ» так и «БВБВБВ», и др.</p>
+    <p><strong>2.</strong> «654313» может означать как «ЕДГВАВ» так и «ЕДГВЛ».</p>
+    <p><strong>3.</strong> «203105» может означать только «ТВИД».</p>
+    <p><strong>4.</strong> «203033» может означать как «ТЬВВ» так и «ТЬЯ».</p>
+    <p>Следовательно, ответ «ТВИД».</p>
+    
+    <div class="note note-success">
+      <strong>Ответ: ТВИД</strong>
+    </div>
+  `;
+  app.appendChild(example1);
+
+  const example2 = document.createElement('section');
+  example2.className = 'card';
+  example2.innerHTML = `
+    <h2 class="card-title">Разбор примера 2 (шифр с символьными кодами)</h2>
+    <p><strong>Задание №187.</strong> Вася и Петя играли в шпионов и кодировали сообщения собственным шифром. Фрагмент кодовой таблицы приведен ниже:</p>
+    <table class="code-table">
+      <tr><th>Ж</th><th>Е</th><th>С</th><th>А</th><th>К</th><th>Л</th></tr>
+      <tr><td>+#</td><td>+^#</td><td>#</td><td>^</td><td>^#</td><td>#+</td></tr>
+    </table>
+    <p>Расшифруйте сообщение, если известно, что буквы в нем не повторяются:</p>
+    <div class="morse-text">#++^##^#^</div>
+    <p>Запишите в ответе расшифрованное сообщение.</p>
+
+    <h3>Решение</h3>
+    <p>Сопоставляя символы их кодам, расшифруем сообщение:</p>
+    <p># → Л</p>
+    <p>+^ → Е</p>
+    <p># → С</p>
+    <p>^ → А</p>
+    <p>#^ → К</p>
+    <p>Получаем: #++^##^#^ = ЛЕСКА.</p>
+    
+    <div class="note note-success">
+      <strong>Ответ: ЛЕСКА</strong>
+    </div>
+  `;
+  app.appendChild(example2);
+
+  const mistakes = document.createElement('section');
+  mistakes.className = 'card';
+  mistakes.innerHTML = `
+    <h2 class="card-title">Типичные ошибки</h2>
+    <ul>
+      <li>❌ Не проверять все варианты расшифровки — всегда ищите альтернативные разбиения</li>
+      <li>❌ Забывать, что в шифрах с номерами букв числа могут быть однозначными (1-9) и двузначными (10-33)</li>
+      <li>❌ В азбуке Морзе начинать с коротких кодов вместо длинных</li>
+      <li>❌ Писать ответ с пробелами или знаками препинания, когда просят без них</li>
+      <li>❌ Не учитывать условие «буквы не повторяются» в некоторых заданиях</li>
+    </ul>
+    <div class="note">
+      <strong>Совет:</strong> всегда записывайте все возможные варианты расшифровки и сравнивайте их.
+    </div>
+  `;
+  app.appendChild(mistakes);
+}
+
+function renderPractice1() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">⚡ Практика 1</h2>
+      <p class="section-desc">10 заданий. После каждого можно сразу проверить ответ и посмотреть решение.</p>
+    </div>
+  `;
+  app.appendChild(head);
+
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice1-tasks';
+  app.appendChild(tasksBlock);
+
+  TASKS.slice(2, 12).forEach((task, idx) => {
+    const taskEl = createTaskElement(task, idx + 1, 'practice1');
+    tasksBlock.appendChild(taskEl);
+  });
+}
+
+function renderPractice2() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const head = document.createElement('div');
+  head.className = 'section-head';
+  head.innerHTML = `
+    <div>
+      <h2 class="section-title">📝 Практика 2</h2>
+      <p class="section-desc">10 заданий. Ответы вводите сразу, но проверка — одной кнопкой в конце.</p>
+    </div>
+  `;
+  app.appendChild(head);
+
+  const tasksBlock = document.createElement('div');
+  tasksBlock.id = 'practice2-tasks';
+  app.appendChild(tasksBlock);
+
+  TASKS.slice(12, 22).forEach((task, idx) => {
+    const taskEl = createTaskElement(task, idx + 1, 'practice2');
+    tasksBlock.appendChild(taskEl);
+  });
+
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn btn-primary btn-block';
+  checkBtn.textContent = '✓ Проверить все ответы';
+  checkBtn.style.marginTop = '8px';
+  checkBtn.addEventListener('click', checkAllPractice2);
+  app.appendChild(checkBtn);
+
+  const resultsPanel = document.createElement('div');
+  resultsPanel.className = 'results-panel';
+  resultsPanel.id = 'results-panel-2';
+  app.appendChild(resultsPanel);
+}
+
+function createTaskElement(task, num, mode) {
+  const taskEl = document.createElement('article');
+  taskEl.className = 'task';
+  taskEl.dataset.taskId = task.id;
+
+  const header = document.createElement('div');
+  header.className = 'task-header';
+
+  const numEl = document.createElement('span');
+  numEl.className = 'task-num';
+  numEl.innerHTML = 'Задание ' + num + ' №' + task.num + getTypeBadge(task.type);
+  header.appendChild(numEl);
+
+  const linkEl = document.createElement('a');
+  linkEl.className = 'task-link';
+  linkEl.href = 'https://inf-oge.sdamgia.ru/problem?id=' + task.num;
+  linkEl.target = '_blank';
+  linkEl.rel = 'noopener';
+  linkEl.textContent = 'Оригинал ↗';
+  header.appendChild(linkEl);
+
+  taskEl.appendChild(header);
+
+  const textEl = document.createElement('p');
+  textEl.className = 'task-text';
+  textEl.innerHTML = task.text.replace(/\n/g, '<br>');
+  taskEl.appendChild(textEl);
+
+  if (task.text2) {
+    const t = document.createElement('p');
+    t.className = 'task-text';
+    t.innerHTML = task.text2.replace(/\n/g, '<br>');
+    taskEl.appendChild(t);
+  }
+
+  if (task.table) {
+    const table = document.createElement('table');
+    table.className = 'code-table';
+    task.table.forEach((row, i) => {
+      const tr = document.createElement('tr');
+      row.forEach((cell) => {
+        const td = document.createElement(i === 0 ? 'th' : 'td');
+        td.textContent = cell;
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+    taskEl.appendChild(table);
+  }
+
+  if (task.text3) {
+    const t = document.createElement('p');
+    t.className = 'task-text';
+    t.innerHTML = task.text3.replace(/\n/g, '<br>');
+    taskEl.appendChild(t);
+  }
+
+  const inputGroup = document.createElement('div');
+  inputGroup.className = 'input-group';
+
+  const label = document.createElement('label');
+  label.className = 'input-label';
+  label.htmlFor = 'input-' + mode + '-' + task.id;
+  label.textContent = 'Ваш ответ:';
+  inputGroup.appendChild(label);
+
+  const input = document.createElement('input');
+  input.className = 'input';
+  input.id = 'input-' + mode + '-' + task.id;
+  input.type = 'text';
+  input.autocomplete = 'off';
+  input.setAttribute('autocomplete', 'off');
+  input.setAttribute('autocorrect', 'off');
+  input.setAttribute('autocapitalize', 'characters');
+  input.setAttribute('spellcheck', 'false');
+  input.setAttribute('data-lpignore', 'true');
+  input.placeholder = 'Введите ответ';
+  input.addEventListener('input', (e) => {
+    updateAnswer(mode, task.id, e.target.value);
+  });
+  inputGroup.appendChild(input);
+  taskEl.appendChild(inputGroup);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+
+  if (mode === 'practice1') {
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'btn btn-primary';
+    checkBtn.textContent = 'Проверить';
+    checkBtn.addEventListener('click', () => checkTask1(task.id));
+    btnRow.appendChild(checkBtn);
+
+    const solBtn = document.createElement('button');
+    solBtn.className = 'btn btn-secondary';
+    solBtn.textContent = 'Показать решение';
+    solBtn.addEventListener('click', () => toggleSolution1(task.id));
+    btnRow.appendChild(solBtn);
+  }
+
+  taskEl.appendChild(btnRow);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback';
+  feedback.id = 'feedback-' + task.id;
+  taskEl.appendChild(feedback);
+
+  const solution = document.createElement('div');
+  solution.className = 'solution';
+  solution.id = 'solution-' + task.id;
+  const solTitle = document.createElement('div');
+  solTitle.className = 'solution-title';
+  solTitle.textContent = 'Решение:';
+  solution.appendChild(solTitle);
+
+  const solParagraphs = task.solution.split('\n\n');
+  solParagraphs.forEach(para => {
+    const p = document.createElement('p');
+    p.textContent = para.trim();
+    solution.appendChild(p);
+  });
+
+  const solAnswer = document.createElement('p');
+  solAnswer.style.marginTop = '10px';
+  solAnswer.style.fontWeight = '600';
+  solAnswer.style.color = 'var(--text)';
+  solAnswer.textContent = 'Ответ: ' + task.answer;
+  solution.appendChild(solAnswer);
+  taskEl.appendChild(solution);
+
+  return taskEl;
+}
+
+function updateAnswer(mode, taskId, value) {
+  if (mode === 'practice1') {
+    state.answers1[taskId] = value;
+    state.checked1[taskId] = false;
+    state.showSolution1[taskId] = false;
+    const input = document.getElementById('input-practice1-' + taskId);
+    const fb = document.getElementById('feedback-' + taskId);
+    const sol = document.getElementById('solution-' + taskId);
+    if (input) input.classList.remove('correct', 'wrong');
+    if (fb) fb.classList.remove('show');
+    if (sol) sol.classList.remove('show');
+  } else {
+    state.answers2[taskId] = value;
+  }
+}
+
+function checkTask1(taskId) {
+  const task = TASKS.find(t => t.id === taskId);
+  if (!task) return;
+
+  const input = document.getElementById('input-practice1-' + taskId);
+  const feedback = document.getElementById('feedback-' + taskId);
+  if (!input || !feedback) return;
+
+  const userAnswer = (state.answers1[taskId] || '').trim();
+
+  if (!userAnswer) {
+    feedback.className = 'feedback show error';
+    feedback.textContent = 'Введите ответ перед проверкой.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+    return;
+  }
+
+  state.checked1[taskId] = true;
+
+  if (userAnswer.toUpperCase() === task.answer.toUpperCase()) {
+    feedback.className = 'feedback show success';
+    feedback.textContent = '✓ Верно! Отличная работа.';
+    input.classList.remove('wrong');
+    input.classList.add('correct');
+  } else {
+    feedback.className = 'feedback show error';
+    feedback.textContent = '✗ Неверно. Правильный ответ: ' + task.answer + '. Посмотрите решение.';
+    input.classList.remove('correct');
+    input.classList.add('wrong');
+  }
+}
+
+function toggleSolution1(taskId) {
+  state.showSolution1[taskId] = !state.showSolution1[taskId];
+  const sol = document.getElementById('solution-' + taskId);
+  if (sol) {
+    sol.classList.toggle('show', state.showSolution1[taskId]);
+  }
+}
+
+function checkAllPractice2() {
+  const results = [];
+  let correct = 0;
+
+  TASKS.slice(12, 22).forEach((task, idx) => {
+    const num = idx + 1;
+    const userAnswer = (state.answers2[task.id] || '').trim();
+    const isCorrect = userAnswer.toUpperCase() === task.answer.toUpperCase();
+    if (isCorrect) correct++;
+    results.push({
+      num: num,
+      task: task,
+      userAnswer: userAnswer || '—',
+      correctAnswer: task.answer,
+      isCorrect: isCorrect
+    });
+  });
+
+  state.results2 = results;
+  renderResults2(results, correct);
+}
+
+function renderResults2(results, correct) {
+  const panel = document.getElementById('results-panel-2');
+  if (!panel) return;
+
+  panel.innerHTML = '';
+  panel.classList.add('show');
+
+  const score = document.createElement('div');
+  score.className = 'results-score';
+  score.innerHTML = `
+    <div class="results-score-num">${correct} / 10</div>
+    <div class="results-score-label">правильных ответов</div>
+  `;
+  panel.appendChild(score);
+
+  const progress = document.createElement('div');
+  progress.className = 'progress-bar';
+  const fill = document.createElement('div');
+  fill.className = 'progress-fill';
+  fill.style.width = (correct * 10) + '%';
+  progress.appendChild(fill);
+  panel.appendChild(progress);
+
+  results.forEach(r => {
+    const item = document.createElement('div');
+    item.className = 'result-item ' + (r.isCorrect ? 'correct' : 'wrong');
+
+    const head = document.createElement('div');
+    head.className = 'result-item-head';
+
+    const numEl = document.createElement('span');
+    numEl.className = 'result-item-num';
+    numEl.textContent = 'Задание ' + r.num + ' №' + r.task.num;
+    head.appendChild(numEl);
+
+    const status = document.createElement('span');
+    status.className = 'result-item-status ' + (r.isCorrect ? 'correct' : 'wrong');
+    status.textContent = r.isCorrect ? 'Верно' : 'Неверно';
+    head.appendChild(status);
+
+    item.appendChild(head);
+
+    const answers = document.createElement('div');
+    answers.className = 'result-item-answers';
+    answers.innerHTML = '<strong>Ваш ответ:</strong> ' + escapeHtml(r.userAnswer) + ' · <strong>Правильный:</strong> ' + escapeHtml(r.correctAnswer);
+    item.appendChild(answers);
+
+    if (!r.isCorrect) {
+      const sol = document.createElement('div');
+      sol.style.cssText = 'margin-top:10px;font-size:13px;color:var(--text-soft);line-height:1.6;';
+      const solParagraphs = r.task.solution.split('\n\n');
+      solParagraphs.forEach(para => {
+        const p = document.createElement('p');
+        p.textContent = para.trim();
+        p.style.marginBottom = '6px';
+        sol.appendChild(p);
+      });
+      item.appendChild(sol);
+    }
+
+    panel.appendChild(item);
+  });
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function switchTab(tabName) {
+  state.currentTab = tabName;
+
+  document.querySelectorAll('.tab').forEach(t => {
+    const isActive = t.dataset.tab === tabName;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+
+  if (tabName === 'theory') renderTheory();
+  else if (tabName === 'practice1') renderPractice1();
+  else if (tabName === 'practice2') renderPractice2();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function init() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+
+  renderTheory();
+}
+
+init();
+</script>
+</body>
+</html>
